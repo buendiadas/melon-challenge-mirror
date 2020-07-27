@@ -1,0 +1,24 @@
+{
+  "name": "melon-challenge",
+  "version": "1.0.0",
+  "description": "Challenge done by Carlos Buendía",
+  "main": "truffle-config.js",
+  "scripts": {
+    "start": "ganache-cli --fork https://mainnet.infura.io/v3/507147bda00d46eba3ae09c0cb0b41d2 &",
+    "test": "truffle test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/carlos-buendia/melon-challenge-mirror.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/carlos-buendia/melon-challenge-mirror/issues"
+  },
+  "homepage": "https://github.com/carlos-buendia/melon-challenge-mirror#readme",
+  "dependencies": {
+    "ganache-cli": "^6.9.1",
+    "solc": "^0.6.12"
+  }
+}

@@ -1,0 +1,11 @@
+pragma solidity ^0.6.0;
+
+contract Constants {
+    address immutable INCOMMING_ASSET_ADDRESS = 0xF9bA5210F91D0474bd1e1DcDAeC4C58E359AaD85;
+    address immutable UNISWAP_EXCHANGE_ASSET = 0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D;
+    address immutable DAI_TOKEN_ADDRESS = 0xc7AD46e0b8a400Bb3C915120d284AafbA8fc4735;
+    address immutable WETH_TOKEN_ADDRESS = 0xc778417E063141139Fce010982780140Aa0cD5Ab;
+    address immutable MKR_TOKEN_ADDRESS = 0xF9bA5210F91D0474bd1e1DcDAeC4C58E359AaD85;
+    address immutable COMP_ASSET_ADDRESS = 0xc00e94Cb662C3520282E6f5717214004A7f26888; // <--- Take a look at how we remove the immutable
+    address immutable COMPTROLLER = 0xc00e94Cb662C3520282E6f5717214004A7f26888;
+}

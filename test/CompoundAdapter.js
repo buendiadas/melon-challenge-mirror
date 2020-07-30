@@ -21,17 +21,11 @@ contract('CompoundAdapter', function (accounts) {
         userVault = await Vault.new();
         console.log("User Vault Address = " + userVault.address)
         adapter = await CompoundAdapter.new();
+        console.log("User adapter Address = " + adapter.address)
         console.log(config);
-        console.log("this is admin account" + config.rinkeby.DAI_COMPOUND)
         daiToken = await ERC20.at(config.rinkeby.DAI_COMPOUND);
         cdaiToken = await ERC20.at(config.rinkeby.CDAI);
         await daiToken.transfer(userVault.address, web3.utils.toBN(1e18), {from: accounts[0]});
-    })
-    beforeEach(async () => {
-        let VaultBalance = await daiToken.balanceOf(userVault.address)
-        let cdaiVaultBalance = await cdaiToken.balanceOf(userVault.address)
-        console.log("ho ho ho! This is vault balance!!" + cdaiVaultBalance)
-        console.log("ho ho ho! This is cDAI vault balance!!" + VaultBalance)
     })
     describe('Supplying assets from a new Vault', async () => {
         before('Call supplyAssets', async () => {
@@ -48,31 +42,45 @@ contract('CompoundAdapter', function (accounts) {
         });
         it('Should receive cDAI in exchange for DAI', async () => {
             const cDaiBalance = await cdaiToken.balanceOf(userVault.address);
-            console.log(cDaiBalance);
             assert(cDaiBalance > 0);
         })
-        it('Should include COMP as a token', async () => {
-            const isCompToken = await userVault.isOwnedAsset(config.rinkeby.COMP);
-            assert(isCompToken, true, "The token is not owned");
+        it('Should include CDAI as a token', async () => {
+            const isToken = await userVault.isOwnedAsset(config.rinkeby.CDAI);
+            assert(isToken, true, "The token is not owned");
         })
+        it('Should include COMP as a token', async () => {
+            const isToken = await userVault.isOwnedAsset(config.rinkeby.COMP);
+            assert(isToken, false, "The token is not owned");
+        })
+        
     })
     describe('Redeeming assets', async () => {
-        before('Call redeen', async () => {
+        let initialTokenBalance;
+        let initialCTokenBalance;
+        const redeem_amount = 100;
+
+        before('Call redeem', async () => {
+            initialTokenBalance = await daiToken.balanceOf(userVault.address);
+            initialCTokenBalance = await cdaiToken.balanceOf(userVault.address);
             encodedParams = web3.eth.abi.encodeParameters(
                 ['address', 'address', 'uint256'],
                 [
                 config.rinkeby.DAI_COMPOUND, // "path" from outgoing asset to incoming asset, including intermediaries
                 config.rinkeby.CDAI, // min incoming asset amount
-                "100"// exact outgoing asset amount
+                redeem_amount// exact outgoing asset amount
                 ]
             );
-            console.log(encodedParams)
             await userVault.addOwnedAsset(config.rinkeby.CDAI)
             await userVault.callOnIntegration(adapter.address, "redeemAssets(bytes)", encodedParams)
+            
         });
-        it('Vault should include cDAI as an asset', async () => {
-            //const isToken = await userVault.isOwnedAsset(config.rinkeby.CDAI);
-            //assert(isToken, true, "The token is not owned");
+        it('cToken Balance should have been decreased by redeem_amount', async () => {
+            const cTokenBalance = await cdaiToken.balanceOf(userVault.address);
+            assert.equal(initialCTokenBalance - redeem_amount, cTokenBalance)
+        })
+        it('Token Balance should have been increased', async () => {
+            const tokenBalance = await daiToken.balanceOf(userVault.address);
+            assert(tokenBalance > initialTokenBalance);
         })
     })
 })

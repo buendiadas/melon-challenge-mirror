@@ -9,5 +9,5 @@ contract IntegrationSignatures {
 
     // bytes4 constant public MY_FUNCTION_SELECTOR = bytes4(keccak256("myFunction(bytes)"));
     bytes4 constant public COMPOUND_SUPPLY_SELECTOR = bytes4(keccak256("supplyAssets(bytes)"));
-    bytes4 constant public COMPOUND_REDEEM_SELECTOR = bytes4(keccak256("redeemCErc20Tokens(bytes)"));
+    bytes4 constant public COMPOUND_REDEEM_SELECTOR = bytes4(keccak256("redeemAssets(bytes)"));
 }

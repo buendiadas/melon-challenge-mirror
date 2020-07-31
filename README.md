@@ -1,4 +1,11 @@
+👉🏻 [Link to solution description](https://github.com/carlos-buendia/melon-challenge-mirror/blob/master/docs/solution.md) 👈🏻 
+
+
+
 # Melon Coding Challenge
+
+
+
 
 ## Background
 

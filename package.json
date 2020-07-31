@@ -4,7 +4,8 @@
   "description": "Challenge done by Carlos Buendía",
   "main": "truffle-config.js",
   "scripts": {
-    "start": "ganache-cli --fork https://mainnet.infura.io/v3/507147bda00d46eba3ae09c0cb0b41d2 &",
+    "start": "ganache-cli --fork https://rinkeby.infura.io/v3/507147bda00d46eba3ae09c0cb0b41d2 -i 1234 --mnemonic 'brand insane federal bargain nice pilot recall zero disagree action arrive hint'",
+    "start-mainnet": "ganache-cli --fork https://mainnet.infura.io/v3/507147bda00d46eba3ae09c0cb0b41d2 -i 1234 --mnemonic 'brand insane federal bargain nice pilot recall zero disagree action arrive hint'",
     "test": "truffle test"
   },
   "repository": {
@@ -18,7 +19,18 @@
   },
   "homepage": "https://github.com/carlos-buendia/melon-challenge-mirror#readme",
   "dependencies": {
+    "eth-gas-reporter": "^0.2.2",
     "ganache-cli": "^6.9.1",
-    "solc": "^0.6.12"
+    "solc": "^0.6.12",
+    "truffle-hdwallet-provider": "^1.0.17",
+    "web3-utils": "^1.2.11"
+  },
+  "devDependencies": {
+    "eslint": "^7.5.0",
+    "eslint-config-standard": "^14.1.1",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1"
   }
 }

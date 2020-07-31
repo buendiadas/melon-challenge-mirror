@@ -55,9 +55,12 @@ contract UniswapV2Adapter is IAdapter, IntegrationSignatures, Constants {
         incomingAssets[0] = incomingAsset;
         return incomingAssets;
     }
-        /// @dev Helper to execute a swap of ERC20 to ERC20
+    
+    
+    /// @dev Helper to execute a swap of ERC20 to ERC20
+    
     function __swapTokenforToken(address[] memory _path, uint256 _outgoingAssetAmount)
-        public
+        private
     {
        IERC20(_path[0]).transferFrom(msg.sender, address(this), _outgoingAssetAmount);
        IERC20(_path[0]).approve(UNISWAP_EXCHANGE_ASSET, _outgoingAssetAmount);
@@ -67,10 +70,12 @@ contract UniswapV2Adapter is IAdapter, IntegrationSignatures, Constants {
              0,
              _path,
              msg.sender,
-            1605272178 // <----------------- Check this out!
+            1605272178 // Arbitrary date   
         );
     }    
-        /// @dev Helper to decode the encoded arguments
+    
+    
+    /// @dev Helper to decode the encoded arguments
     function __decodeCallArgs(bytes memory _encodedCallArgs)
         private
         pure

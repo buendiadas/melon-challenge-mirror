@@ -9,7 +9,9 @@ import "./IERC20.sol";
 /// and asset balances will just be checked elsewhere via IERC20(asset).balanceOf(vaultAddress).
 contract SimpleVault {
     mapping (address => bool) public isOwnedAsset;
-
+    
+    event AssetApproved(address suppliedAsset, address adapter, uint256 amount);
+    
     /// @notice Universal method for calling third party contract functions through adapters
     /// @param _adapter Adapter of the integration on which to execute a call
     /// @param _methodSignature The function signature of the adapter method to execute
@@ -34,6 +36,7 @@ contract SimpleVault {
             uint256 amount = outgoingAmounts[i];
             require(isOwnedAsset[asset]);
             IERC20(asset).approve(_adapter, amount);
+            emit AssetApproved(asset, _adapter, amount);
         }
 
         // The adapter is then called with the specified method and args.

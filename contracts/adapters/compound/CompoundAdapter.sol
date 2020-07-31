@@ -35,17 +35,11 @@ contract CompoundAdapter is IAdapter, IntegrationSignatures, Constants {
         if (_methodSelector != COMPOUND_CLAIM_SELECTOR) {
             (address token, address cToken, uint256 amount) = __decodeCallArgs (_encodedArgs);
             if (_methodSelector == COMPOUND_SUPPLY_SELECTOR) {
-                outgoingAssets_ = new address[](1);
-                outgoingAssets_[0] = token;
-                outgoingAmounts_ = new uint[](1);
-                outgoingAmounts_[0] = amount;
+                return __initializeOutgoing(token, amount);
             } else if (_methodSelector == COMPOUND_REDEEM_SELECTOR) {
-                outgoingAssets_ = new address[](1);
-                outgoingAssets_[0] = cToken;
-                outgoingAmounts_ = new uint[](1);
-                outgoingAmounts_[0] = amount;
+                return __initializeOutgoing(cToken, amount);
             } else {
-            //revert("Method non supported");
+              revert("Method non supported");
              }
         } else {
             outgoingAssets_ = new address[](0);
@@ -120,11 +114,14 @@ contract CompoundAdapter is IAdapter, IntegrationSignatures, Constants {
         uint256 _amount
     )
         internal
-        returns (bool) {
+        returns (bool)
+    {
         uint256 initialERC20Balance = IERC20(_erc20Contract).balanceOf(address(this));
         bool success = IERC20(_erc20Contract).transferFrom(msg.sender, address(this), _amount);
+        
         require(success, "TransferFrom failed"); //  Simplistic, must consider different ERC20 implementations (NON compliant)
         uint256 afterReceiptERC20Balance = IERC20(_erc20Contract).balanceOf(address(this));
+        
         require(afterReceiptERC20Balance >= initialERC20Balance, "Overflow");
         IERC20(_erc20Contract).approve(_cErc20Contract, _amount);
         ICERC20(_cErc20Contract).mint(_amount); // <-- Potentially dangerous, could lead to Reentrancy
@@ -142,17 +139,19 @@ contract CompoundAdapter is IAdapter, IntegrationSignatures, Constants {
         address _erc20Contract,
         address _cErc20Contract,
         uint256 _amount
-    ) internal returns (bool) {
-
+    ) internal returns (bool)
+    {
         uint256 initialCERC20Balance = IERC20(_cErc20Contract).balanceOf(address(this));
         bool success = IERC20(_cErc20Contract).transferFrom(msg.sender, address(this), _amount);
+        
         require(success, "TransferFrom failed"); //  Simplistic, must consider different ERC20 implementations (NON compliant)
         uint256 afterReceiptCERC20Balance = IERC20(_cErc20Contract).balanceOf(address(this));
-        require(afterReceiptCERC20Balance >= initialCERC20Balance, "Overflow");
-        IERC20(_cErc20Contract).approve(_cErc20Contract, _amount);
         
+        require(afterReceiptCERC20Balance >= initialCERC20Balance, "Overflow");
+        IERC20(_cErc20Contract).approve(_cErc20Contract, _amount);        
         uint cBalanceIERC20 = IERC20(_cErc20Contract).balanceOf(address(this));
         ICERC20(_cErc20Contract).redeem(_amount);
+        
         uint256 underlyingAssetReceived = IERC20(_erc20Contract).balanceOf(address(this));
         IERC20(_erc20Contract).transfer(msg.sender, underlyingAssetReceived);
         emit AssetRedeemed(_cErc20Contract,_erc20Contract, cBalanceIERC20);
@@ -188,5 +187,22 @@ contract CompoundAdapter is IAdapter, IntegrationSignatures, Constants {
                             )
         );
     }
+
+        /// @dev Helper to decode the encoded arguments
+
+    function __initializeOutgoing(address _token, uint _amount)
+        public
+        pure
+        returns (
+            address[] memory outgoingAssets_,
+            uint256[] memory outgoingAmounts_
+        )
+    {
+         outgoingAssets_ = new address[](1);
+         outgoingAssets_[0] = _token;
+         outgoingAmounts_ = new uint[](1);
+         outgoingAmounts_[0] = _amount;
+    }
+
 
 }

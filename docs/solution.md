@@ -4,11 +4,11 @@
 
 The repository includes two  Adapters: 
 
-* **Compound Adapter**: The main integration of the solution. Integrates with Compound protocol, allowing to do some of the most important actions:
+* [**Compound Adapter**](https://github.com/carlos-buendia/melon-challenge-mirror/tree/master/contracts/adapters/compound): The main integration of the solution. Integrates with Compound protocol, allowing to do some of the most important actions:
    * **Supply assets**: Providing an already existing in the vault `ERC20`, and exchanging it with a compount token (`cToken`).
    * **Redeem assets** : Specifying an amount of `cTokens` that want to be exchanged back to the underyingasset 
    * **Claim COMP**: to claim accrued interest from compound in `COMP` token
-* **Uniswap Adapter**: Inspired on an existing integration which was created with the purpose of learning from an existing solution. It enables to exchange an existing `ERC20`, with another selected `ERC20`.
+* [**Uniswap Adapter**](https://github.com/carlos-buendia/melon-challenge-mirror/blob/master/contracts/adapters/uniswap/UniswapV2Adapter.sol): Inspired on an existing integration which was created with the purpose of learning from an existing solution. It enables to exchange an existing `ERC20`, with another selected `ERC20`.
 
 
 The proposed solution mainly focused on the first adapter (Compound). The technical details will be explained on a call. 

@@ -28,9 +28,9 @@ contract('CompoundAdapter', function (accounts) {
       encodedParams = web3.eth.abi.encodeParameters(
         ['address', 'address', 'uint256'],
         [
-          conf.DAI_COMPOUND, // "path" from outgoing asset to incoming asset, including intermediaries
-          conf.CDAI, // min incoming asset amount
-          supplyAmount// exact outgoing asset amount
+          conf.DAI_COMPOUND, 
+          conf.CDAI, 
+          supplyAmount
         ]
       );
       await userVault.addOwnedAsset(conf.DAI_COMPOUND)
@@ -56,9 +56,9 @@ contract('CompoundAdapter', function (accounts) {
       encodedParams = web3.eth.abi.encodeParameters(
         ['address', 'address', 'uint256'],
         [
-          conf.DAI_COMPOUND, // "path" from outgoing asset to incoming asset, including intermediaries
-          conf.CDAI, // min incoming asset amount
-          redeemAmount// exact outgoing asset amount
+          conf.DAI_COMPOUND, 
+          conf.CDAI, 
+          redeemAmount
         ]
       )
       await userVault.addOwnedAsset(conf.CDAI)
@@ -77,9 +77,7 @@ contract('CompoundAdapter', function (accounts) {
     before('Call claimComp', async () => {
       encodedParams = web3.eth.abi.encodeParameters(
         ['address'],
-        [
-        conf.COMPTROLLER
-        ]
+        [conf.COMPTROLLER]
       )
       await userVault.callOnIntegration(adapter.address, 'claimComp(bytes)', encodedParams)
     })

@@ -1,3 +1,5 @@
+pragma solidity ^0.6.6;
+
 interface CEth {
     function mint() external payable;
     function exchangeRateCurrent() external returns (uint256);
